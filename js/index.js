@@ -17,6 +17,24 @@ const searchBox = document.getElementById("search-input");
 const resultsContainer = document.getElementById("search-results-container");
 const loginButton = document.getElementById("login-button");
 const navIcon = document.getElementById("nav-icon");
+const banner = document.getElementById('platform-update-banner');
+const closeBtn = document.getElementById('close-update-banner');
+
+if (banner && closeBtn) {
+    if (localStorage.getItem('openblue_update_dismissed') === 'true') {
+        banner.style.display = 'none';
+    }
+
+    closeBtn.addEventListener('click', () => {
+        banner.style.opacity = '0';
+        banner.style.transform = 'translateY(-6px)';
+        setTimeout(() => {
+            banner.style.display = 'none';
+            localStorage.setItem('openblue_update_dismissed', 'true');
+        }, 200);
+    });
+}
+
 
 if (navIcon) {
     navIcon.style.cursor = "pointer";
