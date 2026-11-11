@@ -26,11 +26,18 @@ document.getElementById('sign-up').addEventListener('click', async () => {
     const username = document.getElementById('username-signup').value.trim();
     const email = document.getElementById('email-signup').value.trim();
     const password = document.getElementById('password-signup').value;
+    const agreedToTerms = document.getElementById('signup-age-terms-checkbox')?.checked;
     const errorDiv = document.getElementById('signup-error-message');
 
     if (!username || !email || !password) {
         errorDiv.classList.remove('hidden');
         errorDiv.textContent = 'All fields are required.';
+        return;
+    }
+
+    if (!agreedToTerms) {
+        errorDiv.classList.remove('hidden');
+        errorDiv.textContent = 'You must confirm that you are at least 15 years old and agree to the Terms of Service and Privacy Policy.';
         return;
     }
 

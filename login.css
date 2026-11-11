@@ -231,6 +231,25 @@ input::placeholder {
     color: var(--text-primary);
 }
 
+.login-legal-note {
+    text-align: center;
+    font-size: 0.78rem;
+    line-height: 1.45;
+    color: var(--text-tertiary);
+    margin: 4px 0 0 0;
+}
+
+.login-legal-note a {
+    color: hsl(204, 100%, 65%);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.login-legal-note a:hover {
+    color: var(--text-primary);
+    text-decoration: underline;
+}
+
 .btn {
     display: inline-flex;
     align-items: center;

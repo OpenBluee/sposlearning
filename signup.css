@@ -333,15 +333,47 @@ input::placeholder {
     margin: 0;
 }
 
-#privacy-note a {
+#privacy-note a,
+.consent-checkbox-label a {
     color: hsl(204, 100%, 65%);
     text-decoration: none;
     font-weight: 500;
     transition: color 0.2s;
 }
 
-#privacy-note a:hover {
+#privacy-note a:hover,
+.consent-checkbox-label a:hover {
     color: var(--text-primary);
+    text-decoration: underline;
+}
+
+.consent-checkbox-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 12px;
+    background-color: var(--surface-2);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+}
+
+.consent-checkbox-container input[type="checkbox"] {
+    width: 17px;
+    height: 17px;
+    margin: 2px 0 0 0;
+    accent-color: hsl(204, 100%, 50%);
+    cursor: pointer;
+    flex-shrink: 0;
+    animation: none;
+}
+
+.consent-checkbox-label {
+    font-size: 0.82rem;
+    line-height: 1.45;
+    color: var(--text-secondary);
+    font-weight: 400;
+    cursor: pointer;
+    letter-spacing: normal;
 }
 
 #verify-label {
