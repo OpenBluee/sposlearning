@@ -1,0 +1,461 @@
+/* ===== SPOŠLearning Maintenance Page & Overlay ===== */
+
+.spos-maint-root {
+    --maint-bg: var(--main-bg, #121212);
+    --maint-surface-1: var(--surface-1, #1E1E1E);
+    --maint-surface-2: var(--surface-2, #282828);
+    --maint-border: var(--border-color, #2A2A2A);
+    --maint-text-primary: var(--text-primary, #FFFFFF);
+    --maint-text-secondary: var(--text-secondary, rgba(255, 255, 255, 0.72));
+    --maint-text-tertiary: var(--text-tertiary, rgba(255, 255, 255, 0.5));
+    --maint-accent: var(--accent-primary, hsl(204, 100%, 50%));
+    --maint-orange: #f7931e;
+    --maint-blue: #29abe2;
+    --maint-success: #22c55e;
+    --maint-danger: #ef4444;
+
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: var(--maint-text-primary);
+    background-color: var(--maint-bg);
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 32px 20px 24px;
+    box-sizing: border-box;
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: auto;
+    isolation: isolate;
+}
+
+.spos-maint-root *,
+.spos-maint-root *::before,
+.spos-maint-root *::after {
+    box-sizing: border-box;
+}
+
+/* Fullscreen overlay mode (injected on any page when API errors) */
+#spos-maintenance-overlay.spos-maint-root {
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    min-height: 100dvh;
+    animation: sposMaintFadeIn 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+html.spos-maint-locked,
+body.spos-maint-locked {
+    overflow: hidden !important;
+}
+
+/* Subtle ambient brand glow matching SPOŠLearning logo (#29abe2 + #f7931e) */
+.spos-maint-root::before,
+.spos-maint-root::after {
+    content: "";
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(110px);
+    opacity: 0.14;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.spos-maint-root::before {
+    width: 460px;
+    height: 460px;
+    top: -140px;
+    left: -120px;
+    background: var(--maint-blue);
+}
+
+.spos-maint-root::after {
+    width: 420px;
+    height: 420px;
+    bottom: -140px;
+    right: -100px;
+    background: var(--maint-orange);
+}
+
+[data-theme="light"] .spos-maint-root::before,
+[data-theme="light"] .spos-maint-root::after {
+    opacity: 0.12;
+}
+
+[data-theme="miku"] #spos-maintenance-overlay.spos-maint-root {
+    background: rgba(5, 22, 26, 0.76) !important;
+    backdrop-filter: blur(12px);
+}
+
+[data-theme="miku"] .spos-maint-root::before,
+[data-theme="miku"] .spos-maint-root::after {
+    display: none;
+}
+
+/* Standalone page body helper */
+body.spos-maint-page-body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--main-bg, #121212);
+    min-height: 100vh;
+}
+
+/* Main centered wrapper */
+.spos-maint-center {
+    width: 100%;
+    max-width: 540px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    padding: 16px 0;
+}
+
+/* Brand header */
+.spos-maint-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    user-select: none;
+}
+
+.spos-maint-logo {
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+    display: block;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.25));
+}
+
+.spos-maint-brand-name {
+    font-size: 1.35rem;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    color: var(--maint-text-primary);
+}
+
+/* Maintenance Card */
+.spos-maint-card {
+    width: 100%;
+    background: var(--maint-surface-1);
+    border: 1px solid var(--maint-border);
+    border-radius: 18px;
+    padding: 36px 32px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 20px;
+}
+
+[data-theme="light"] .spos-maint-card {
+    box-shadow: 0 18px 44px rgba(15, 23, 42, 0.08);
+}
+
+/* Icon Badge */
+.spos-maint-icon-badge {
+    width: 68px;
+    height: 68px;
+    border-radius: 18px;
+    background: rgba(247, 147, 30, 0.12);
+    border: 1px solid rgba(247, 147, 30, 0.32);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--maint-orange);
+    box-shadow: 0 8px 24px rgba(247, 147, 30, 0.14);
+    transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+}
+
+.spos-maint-icon-badge svg {
+    width: 34px;
+    height: 34px;
+    stroke: currentColor;
+}
+
+.spos-maint-card[data-state="online"] .spos-maint-icon-badge {
+    background: rgba(34, 197, 94, 0.12);
+    border-color: rgba(34, 197, 94, 0.35);
+    color: var(--maint-success);
+    box-shadow: 0 8px 24px rgba(34, 197, 94, 0.14);
+}
+
+/* Status Pill */
+.spos-maint-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    background: rgba(247, 147, 30, 0.12);
+    border: 1px solid rgba(247, 147, 30, 0.3);
+    color: #ffa726;
+}
+
+[data-theme="light"] .spos-maint-status-pill {
+    color: #c2410c;
+    background: rgba(247, 147, 30, 0.14);
+}
+
+.spos-maint-card[data-state="checking"] .spos-maint-status-pill {
+    background: rgba(41, 171, 226, 0.12);
+    border-color: rgba(41, 171, 226, 0.32);
+    color: var(--maint-accent);
+}
+
+.spos-maint-card[data-state="online"] .spos-maint-status-pill {
+    background: rgba(34, 197, 94, 0.12);
+    border-color: rgba(34, 197, 94, 0.35);
+    color: var(--maint-success);
+}
+
+.spos-maint-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+    flex-shrink: 0;
+    animation: sposMaintPulse 1.8s ease-in-out infinite;
+}
+
+.spos-maint-card[data-state="online"] .spos-maint-dot {
+    animation: none;
+}
+
+/* Typography */
+.spos-maint-title {
+    margin: 0;
+    font-size: 1.85rem;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+    color: var(--maint-text-primary);
+}
+
+.spos-maint-desc {
+    margin: -6px 0 0 0;
+    font-size: 0.96rem;
+    line-height: 1.65;
+    color: var(--maint-text-secondary);
+    max-width: 440px;
+}
+
+/* Details Box */
+.spos-maint-details {
+    width: 100%;
+    background: var(--maint-surface-2);
+    border: 1px solid var(--maint-border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: left;
+}
+
+.spos-maint-detail-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 0.86rem;
+}
+
+.spos-maint-detail-label {
+    color: var(--maint-text-tertiary);
+    font-weight: 500;
+}
+
+.spos-maint-detail-value {
+    color: var(--maint-text-primary);
+    font-weight: 600;
+    text-align: right;
+}
+
+.spos-maint-code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.82rem;
+    padding: 2px 8px;
+    border-radius: 6px;
+    background: var(--maint-surface-1);
+    border: 1px solid var(--maint-border);
+    color: var(--maint-accent);
+}
+
+/* Action Buttons */
+.spos-maint-actions {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 4px;
+}
+
+.spos-maint-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 44px;
+    padding: 0 22px;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 0.93rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    border: 1px solid transparent;
+    transition: transform 0.15s ease, filter 0.15s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.spos-maint-btn:active:not(:disabled) {
+    transform: translateY(1px);
+}
+
+.spos-maint-btn:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+.spos-maint-btn svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
+.spos-maint-btn-primary {
+    background: var(--maint-accent);
+    color: #ffffff;
+    min-width: 180px;
+}
+
+.spos-maint-btn-primary:hover:not(:disabled) {
+    filter: brightness(1.1);
+}
+
+.spos-maint-btn-secondary {
+    background: var(--maint-surface-2);
+    border-color: var(--maint-border);
+    color: var(--maint-text-primary);
+}
+
+.spos-maint-btn-secondary:hover:not(:disabled) {
+    border-color: var(--maint-accent);
+}
+
+.spos-maint-spin {
+    animation: sposMaintSpin 0.85s linear infinite;
+}
+
+/* Footer */
+.spos-maint-footer {
+    width: 100%;
+    max-width: 540px;
+    text-align: center;
+    padding-top: 18px;
+    border-top: 1px solid var(--maint-border);
+    font-size: 0.84rem;
+    color: var(--maint-text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.spos-maint-footer a {
+    color: var(--maint-text-secondary);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.spos-maint-footer a:hover {
+    color: var(--maint-text-primary);
+    text-decoration: underline;
+}
+
+.spos-maint-openblue-logo {
+    width: 24px;
+    height: 24px;
+    border-radius: 5px;
+    object-fit: cover;
+    display: inline-block;
+}
+
+/* Animations */
+@keyframes sposMaintFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes sposMaintPulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.45;
+        transform: scale(0.82);
+    }
+}
+
+@keyframes sposMaintSpin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Responsive */
+@media (max-width: 560px) {
+    .spos-maint-root {
+        padding: 20px 14px 18px;
+    }
+
+    .spos-maint-card {
+        padding: 28px 20px;
+        border-radius: 16px;
+        gap: 16px;
+    }
+
+    .spos-maint-title {
+        font-size: 1.5rem;
+    }
+
+    .spos-maint-desc {
+        font-size: 0.9rem;
+    }
+
+    .spos-maint-detail-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+
+    .spos-maint-detail-value {
+        text-align: left;
+    }
+
+    .spos-maint-btn {
+        width: 100%;
+    }
+}

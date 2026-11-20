@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="/media/logo.svg">
+    <title>Probíhá údržba – SPOŠLearning</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/global.css">
+    <link rel="stylesheet" href="/maintenance.css">
+
+    <script type="module">
+        import { applyTheme } from '/js/theme.js';
+        import '/js/config.js';
+        applyTheme();
+    </script>
+</head>
+
+<body class="spos-maint-page-body">
+    <div class="spos-maint-root">
+        <div class="spos-maint-center">
+            <div class="spos-maint-brand">
+                <img src="/media/logo.svg" alt="SPOŠLearning" class="spos-maint-logo">
+                <span class="spos-maint-brand-name">SPOŠLearning</span>
+            </div>
+
+            <section class="spos-maint-card card" id="spos-maint-card" data-state="offline" role="alert" aria-live="polite">
+                <div class="spos-maint-icon-badge" id="spos-maint-icon-badge" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                    </svg>
+                </div>
+
+                <div class="spos-maint-status-pill">
+                    <span class="spos-maint-dot"></span>
+                    <span id="spos-maint-pill-text">API nedostupné · Chyba 1033</span>
+                </div>
+
+                <h1 class="spos-maint-title" id="spos-maint-title">Probíhá údržba</h1>
+
+                <p class="spos-maint-desc" id="spos-maint-desc">
+                    SPOŠLearning právě prochází údržbou nebo je náš API server dočasně nedostupný.
+                    Pracujeme na tom, aby vše co nejdříve zase fungovalo normálně.
+                </p>
+
+                <div class="spos-maint-details">
+                    <div class="spos-maint-detail-row">
+                        <span class="spos-maint-detail-label">Endpoint</span>
+                        <span class="spos-maint-detail-value"><code class="spos-maint-code">api.sposlearning.cz</code></span>
+                    </div>
+                    <div class="spos-maint-detail-row">
+                        <span class="spos-maint-detail-label">Stav</span>
+                        <span class="spos-maint-detail-value" id="spos-maint-status-detail">Ověřuji připojení...</span>
+                    </div>
+                    <div class="spos-maint-detail-row">
+                        <span class="spos-maint-detail-label">Další kontrola</span>
+                        <span class="spos-maint-detail-value" id="spos-maint-countdown">Právě kontroluji...</span>
+                    </div>
+                </div>
+
+                <div class="spos-maint-actions">
+                    <button type="button" class="spos-maint-btn spos-maint-btn-primary btn-primary" id="spos-maint-retry-btn">
+                        <svg id="spos-maint-retry-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M21 12a9 9 0 1 1-2.64-6.36"/>
+                            <polyline points="21 3 21 9 15 9"/>
+                        </svg>
+                        <span id="spos-maint-retry-label">Zkusit znovu</span>
+                    </button>
+                </div>
+            </section>
+        </div>
+
+        <footer class="spos-maint-footer">
+            <span>SPOŠLearning by</span>
+            <a href="https://github.com/OpenBluee" target="_blank" rel="noopener noreferrer">
+                <img src="/media/openblue.png" alt="OpenBlue" class="spos-maint-openblue-logo">
+                <span>OpenBlue</span>
+            </a>
+        </footer>
+    </div>
+</body>
+
+</html>
